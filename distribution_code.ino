@@ -1,3 +1,11 @@
+//
+//  main.cpp
+//  Final Project
+//
+//  Created by Sarika Tyagi on 11/30/16.
+//  Copyright © 2016 Sarika Tyagi. All rights reserved.
+//
+
 #include <gamma.h>
 #include <RGBmatrixPanel.h>
 #include <Adafruit_GFX.h>
@@ -25,23 +33,38 @@ void print_level(int level);
 void print_lives(int lives);
 void game_over();
 
+//CHANGES START HERE
+//constants for matrix; check later for matrix array
+const int PLAYER_ROWS = 2;
+const int PLAYER_COLUMNS = 3;
+
+const int MATRIX_ROWS = 16;
+const int MATRIX_COLS = 32;
+
+
+//create the player array
+const int playerArray[PLAYER_ROWS][PLAYER_COLUMNS];
+
+
+
+
 class Color {
-  public:
+public:
     int red;
     int green;
     int blue;
     Color() {
-      red = 0;
-      green = 0;
-      blue = 0;
+        red = 0;
+        green = 0;
+        blue = 0;
     }
     Color(int r, int g, int b) {
-      red = r;
-      green = g;
-      blue = b;
+        red = r;
+        green = g;
+        blue = b;
     }
     uint16_t to_333() const {
-      return matrix.Color333(red, green, blue);
+        return matrix.Color333(red, green, blue);
     }
 };
 
@@ -57,68 +80,86 @@ const Color LIME(4, 7, 0);
 const Color AQUA(0, 7, 7);
 
 class Invader {
-  public:
+public:
     // Constructors
     Invader() {
-      x = 0;
-      y = 0;
-      strength = 0;
+        x = 0;
+        y = 0;
+        strength = 0;
     }
     // sets values for private date members x and y
     Invader(int x_arg, int y_arg) {
+        x = x_arg;
+        y = y_arg;
     }
     // sets values for private data members
     Invader(int x_arg, int y_arg, int strength_arg) {
+        x = x_arg;
+        y = y_arg;
+        strength = strength_arg;
     }
     // sets values for private data members
     void initialize(int x_arg, int y_arg, int strength_arg) {
+        x = x_arg;
+        y = y_arg;
+        strength = strength_arg;
     }
     
     // getters
     int get_x() const {
+        return x;
     }
     int get_y() const {
+        return y;
     }
     int get_strength() const {
+        return strength;
     }
-
+    
     // Moves the Invader down the screen by one row
     // Modifies: y
     void move() {
+        y = y + 1;
+        return;
     }
     
     // draws the Invader if its strength is greater than 0
     // calls: draw_with_rgb
     void draw() {
-    }
+        switch (strength) {
+            case 1:
+                draw_with_rgb(RED, Color eye_color)
+                
+           }
     
     // draws black where the Invader used to be
     // calls: draw_with_rgb
     void erase() {
-    }    
+    }
     
     // Invader is hit by a Cannonball.
     // Modifies: strength
     // calls: draw, erase
     void hit() {
     }
-
-  private:
+    
+private:
     int x;
     int y;
     int strength;
     
     // draws the Invader
     void draw_with_rgb(Color body_color, Color eye_color) {
+        
     }
 };
 
 class Cannonball {
-  public:
+public:
     Cannonball() {
-      x = 0;
-      y = 0;
-      fired = false;
+        x = 0;
+        y = 0;
+        fired = false;
     }
     
     // resets private data members to initial values
@@ -153,19 +194,19 @@ class Cannonball {
     // draws black where the Cannonball used to be
     void erase() {
     }
-
-  private:
+    
+private:
     int x;
     int y;
     bool fired;
 };
 
 class Player {
-  public:
+public:
     Player() {
-      x = 0;
-      y = 0;
-      lives = 3;
+        x = 0;
+        y = 0;
+        lives = 3;
     }
     
     // getters
@@ -187,32 +228,36 @@ class Player {
     // draws the Player
     // calls: draw_with_rgb
     void draw() {
+        
+        
+        
     }
     
     // draws black where the Player used to be
     // calls: draw_with_rgb
     void erase() {
     }
-
-  private:
+    
+private:
     int x;
     int y;
     int lives;
-
+    
     // sets private data members x and y to initial values
     void initialize(int x_arg, int y_arg) {
     }
     
     // draws the player
     void draw_with_rgb(Color color) {
+        
     }
 };
 
 class Game {
-  public:
+public:
     Game() {
-      level = 0;
-      time = 0;
+        level = 0;
+        time = 0;
     }
     
     // returns enemy at specified index, if in bounds
@@ -230,18 +275,18 @@ class Game {
     // Modifies: global variable matrix
     void loop(int potentiometer_value, bool button_pressed) {
     }
-
-  private:
+    
+private:
     int level;
     int time;
     Player player;
     Cannonball ball;
     Invader enemies[NUM_ENEMIES];
-
+    
     // check if Player defeated all Invaders in current level
     bool level_cleared() {
     }
-
+    
     // set up a level
     void reset_level() {
     }
@@ -252,17 +297,17 @@ Game game;
 
 // see http://arduino.cc/en/Reference/Setup
 void setup() {
-  Serial.begin(9600);
-  pinMode(BUTTON_PIN_NUMBER, INPUT);
-  matrix.begin();
+    Serial.begin(9600);
+    pinMode(BUTTON_PIN_NUMBER, INPUT);
+    matrix.begin();
 }
 
 // see http://arduino.cc/en/Reference/Loop
 void loop() {
-  int potentiometer_value = analogRead(POTENTIOMETER_PIN_NUMBER);
-  bool button_pressed = (digitalRead(BUTTON_PIN_NUMBER) == HIGH);
-
-  game.loop(potentiometer_value, button_pressed);
+    int potentiometer_value = analogRead(POTENTIOMETER_PIN_NUMBER);
+    bool button_pressed = (digitalRead(BUTTON_PIN_NUMBER) == HIGH);
+    
+    game.loop(potentiometer_value, button_pressed);
 }
 
 // displays Level
@@ -276,4 +321,6 @@ void print_lives(int lives) {
 // displays "game over"
 void game_over() {
 }
+
+
 
